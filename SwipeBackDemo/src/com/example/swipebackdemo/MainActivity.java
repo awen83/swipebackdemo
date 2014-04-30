@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.example.swipebackdemo;
 
@@ -28,18 +43,26 @@ public class MainActivity extends Activity {
     private TextView mTipsBottom;
     private SwipeBackLayout mSwipeBackLayout;
     private boolean mAllowEnableSwipeBack = true;
+    private ViewGroup mRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        getWindow().setBackgroundDrawable(new ColorDrawable(0));
-        getWindow().getDecorView().setBackgroundDrawable(null);
+        // getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        // getWindow().getDecorView().setBackgroundDrawable(null);
         setContentView(R.layout.main);
+        mRoot = (ViewGroup) findViewById(R.id.root);
+        int red = (int) (Math.random() * 255);
+        int green = (int) (Math.random() * 255);
+        int blue = (int) (Math.random() * 255);
         int color = 0xff000000 | (sActivityNumber * 0x11 % 0xff) << 16
                 | (sActivityNumber * 0x11 % 0xff) << 8 | (sActivityNumber * 0x11 % 0xff);
+        int randomColor = 0xff000000 | red << 16 | green << 8 | blue;
+        color = randomColor;
         Log.i(TAG, ">>>>>>>>>color = " + Integer.toHexString(color));
         getActionBar().setBackgroundDrawable(new ColorDrawable(color));
+        mRoot.setBackgroundColor(color);
         mSwipeBackLayout = new SwipeBackLayout(this);
         if (mSwipeBackLayout != null) {
             boolean allowSwipe = true;// "1".equals(SystemProperties.get("debug.zyw.swipeable",
