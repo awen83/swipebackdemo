@@ -17,8 +17,10 @@
 package com.example.swipebackdemo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
@@ -26,10 +28,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -44,6 +49,8 @@ public class MainActivity extends Activity {
     private SwipeBackLayout mSwipeBackLayout;
     private boolean mAllowEnableSwipeBack = true;
     private ViewGroup mRoot;
+    private Button mShowText;
+    private EditText mEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +93,24 @@ public class MainActivity extends Activity {
         mTipsLeft.setText(getString(R.string.tips) + sActivityNumber);
         mTipsRight.setText(getString(R.string.tips) + sActivityNumber);
         mTipsBottom.setText(getString(R.string.tips) + sActivityNumber);
+        mShowText = (Button) findViewById(R.id.button_show_text);
+        mEditText = (EditText) findViewById(R.id.input);
         sActivityNumber++;
 
+        mShowText.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                String text = "" + mEditText.getText();
+                if (text != null && text.length() > 0) {
+                    showDialog(text);
+                } else {
+                    showDialog("EditText ‰»ÎŒ™ø’£°");
+                }
+            }
+        });
+        
         mStartActivity.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -134,6 +157,54 @@ public class MainActivity extends Activity {
     protected void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // TODO Auto-generated method stub
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // TODO Auto-generated method stub
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO Auto-generated method stub
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_about) {
+            showDialog(getString(R.string.about_content));
+            return true;
+        } else if (id == R.id.action_exit) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showDialog(String msg) {
+        // TODO Auto-generated method stub
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle(R.string.about_title)
+                .setMessage(msg)
+                .setCancelable(true)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
 }
